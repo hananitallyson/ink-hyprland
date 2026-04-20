@@ -230,6 +230,7 @@ Clone and install the [Graphite GTK Theme](https://github.com/vinceliuice/Graphi
 git clone https://github.com/vinceliuice/Graphite-gtk-theme.git /tmp/graphite
 cd /tmp/graphite
 sudo ./install.sh -d /usr/share/themes --tweaks black rimless
+sudo rm -rf /tmp/graphite
 ```
 
 Verify the theme was installed:
@@ -249,7 +250,7 @@ git clone https://github.com/googIyEYES/YAMIS.git /tmp/yamis
 cd /tmp/yamis
 tar -xzvf monochrome-icon-theme.tar.gz -C /tmp/yamis/
 sudo cp -r /tmp/yamis/YAMIS /usr/share/icons/YAMIS
-rm -rf /tmp/yamis
+sudo rm -rf /tmp/graphite
 ```
 
 Verify:
