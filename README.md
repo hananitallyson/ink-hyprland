@@ -250,7 +250,7 @@ git clone https://github.com/googIyEYES/YAMIS.git /tmp/yamis
 cd /tmp/yamis
 tar -xzvf monochrome-icon-theme.tar.gz -C /tmp/yamis/
 sudo cp -r /tmp/yamis/YAMIS /usr/share/icons/YAMIS
-sudo rm -rf /tmp/graphite
+sudo rm -rf /tmp/yamis
 ```
 
 Verify:
