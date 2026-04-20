@@ -14,7 +14,7 @@ Manual setup guide for my personal Arch Linux environment using Hyprland as the 
   - [4. Display Manager (greetd)](#4-display-manager-greetd)
   - [5. Paru (AUR Helper)](#5-paru-aur-helper)
   - [6. Terminal & Editors](#6-terminal--editors)
-  - [7. Interface](#7-interface)
+  - [7. Interface & Widgets](#7-interface--widgets)
   - [8. GTK Theme — Graphite](#8-gtk-theme--graphite)
   - [9. Icons — YAMIS](#9-icons--yamis)
   - [10. Cursor — Notwaita](#10-cursor--notwaita)
@@ -25,9 +25,8 @@ Manual setup guide for my personal Arch Linux environment using Hyprland as the 
   - [15. Clipboard & Screenshots](#15-clipboard--screenshots)
   - [16. Networking](#16-networking)
   - [17. Utilities](#17-utilities)
-  - [18. Fish Shell](#18-fish-shell)
-  - [19. asdf-vm](#19-asdf-vm)
-  - [20. Dotfiles with GNU Stow](#20-dotfiles-with-gnu-stow)
+  - [18. asdf-vm](#18-asdf-vm)
+  - [19. Dotfiles with GNU Stow](#19-dotfiles-with-gnu-stow)
 - [Post-installation](#post-installation)
 
 ---
@@ -69,7 +68,13 @@ Install the Mesa and Vulkan drivers for AMD GPUs:
 sudo pacman -S --needed amd-ucode mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon
 ```
 
-> Replace with nvidia-open for NVIDIA support, or use only the mesa package for integrated graphics if you are not using AMD.
+Verify the Vulkan driver is active:
+
+```bash
+vulkaninfo --summary
+```
+
+> Replace with `nvidia` or `intel-media-driver` packages if not using AMD.
 
 ---
 
@@ -179,9 +184,22 @@ vim --version | head -1
 nvim --version | head -1
 ```
 
+Add `fish` to the list of valid shells and set it as your default:
+
+```bash
+echo $(which fish) | sudo tee -a /etc/shells
+chsh -s $(which fish)
+```
+
+Verify the change (takes effect on next login):
+
+```bash
+grep fish /etc/shells
+```
+
 ---
 
-### 7. Interface
+### 7. Interface & Widgets
 
 Install the status bar, wallpaper daemon, notification daemon, and GTK configurator:
 
@@ -331,6 +349,12 @@ Install clipboard and screenshot utilities:
 sudo pacman -S --needed wl-clipboard cliphist grim slurp
 ```
 
+Verify:
+
+```bash
+grim --help 2>&1 | head -1
+```
+
 ---
 
 ### 16. Networking
@@ -382,24 +406,7 @@ stow --version | head -1
 
 ---
 
-### 18. Fish Shell
-
-Add `fish` to the list of valid shells and set it as your default:
-
-```bash
-echo $(which fish) | sudo tee -a /etc/shells
-chsh -s $(which fish)
-```
-
-Verify the change (takes effect on next login):
-
-```bash
-grep fish /etc/shells
-```
-
----
-
-### 19. asdf-vm
+### 18. asdf-vm
 
 Install `asdf-vm` from the AUR:
 
@@ -415,7 +422,7 @@ asdf version
 
 ---
 
-### 20. Dotfiles with GNU Stow
+### 19. Dotfiles with GNU Stow
 
 Clone this repository and use `stow` to symlink all configs into `$HOME`:
 
