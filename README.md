@@ -1,25 +1,33 @@
-# dotfiles — Arch Linux + Hyprland Setup
+# Ink Hyprland
 
-Automated setup for my personal Arch Linux environment using Hyprland as the Wayland compositor, Fish shell, Neovim, and GNU Stow for dotfile management.
+Manual setup guide for my personal Arch Linux environment using Hyprland as the Wayland compositor, Fish shell, Neovim, and GNU Stow for dotfile management.
 
 ---
 
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
-- [How to use](#how-to-use)
-- [What the script does](#what-the-script-does)
+- [Installation](#installation)
   - [1. Base dependencies](#1-base-dependencies)
-  - [2. Official packages](#2-official-packages)
-  - [3. Paru (AUR Helper)](#3-paru-aur-helper)
-  - [4. AUR packages](#4-aur-packages)
-  - [5. Display Manager (greetd)](#5-display-manager-greetd)
-  - [6. GTK Theme — Graphite](#6-gtk-theme--graphite)
-  - [7. Icons — YAMIS](#7-icons--yamis)
-  - [8. Fish Shell](#8-fish-shell)
-  - [9. Dotfiles with GNU Stow](#9-dotfiles-with-gnu-stow)
-- [Package details](#package-details)
-- [Dotfiles structure](#dotfiles-structure)
+  - [2. GPU drivers](#2-gpu-drivers)
+  - [3. Wayland & Hyprland](#3-wayland--hyprland)
+  - [4. Display Manager (greetd)](#4-display-manager-greetd)
+  - [5. Paru (AUR Helper)](#5-paru-aur-helper)
+  - [6. Terminal & Editors](#6-terminal--editors)
+  - [7. Interface & Widgets](#7-interface)
+  - [8. GTK Theme — Graphite](#8-gtk-theme--graphite)
+  - [9. Icons — YAMIS](#9-icons--yamis)
+  - [10. Cursor — Notwaita](#10-cursor--notwaita)
+  - [11. Fonts](#11-fonts)
+  - [12. File Manager](#12-file-manager)
+  - [13. Audio](#13-audio)
+  - [14. Media](#14-media)
+  - [15. Clipboard & Screenshots](#15-clipboard--screenshots)
+  - [16. Networking](#16-networking)
+  - [17. Utilities](#17-utilities)
+  - [18. Fish Shell](#18-fish-shell)
+  - [19. asdf-vm](#19-asdf-vm)
+  - [20. Dotfiles with GNU Stow](#20-dotfiles-with-gnu-stow)
 - [Post-installation](#post-installation)
 
 ---
@@ -29,94 +37,90 @@ Automated setup for my personal Arch Linux environment using Hyprland as the Way
 - Arch Linux installed and running
 - Internet access
 - A regular user with `sudo` access (do **not** run as root)
-- AMD GPU (the script installs `vulkan-radeon` and `mesa` drivers)
+- AMD GPU (this guide installs `vulkan-radeon` and `mesa` drivers)
 
-> If you use NVIDIA or Intel, replace the GPU driver packages in the [relevant section](#gpu--drivers).
-
----
-
-## How to use
-
-Clone this repository and run the install script:
-
-```bash
-git clone https://github.com/hananitallyson/dotfiles.git ~/dotfiles
-cd ~/dotfiles
-chmod +x install.sh
-./install.sh
-```
-
-The script will prompt for your `sudo` password when needed. Do not run it as root.
-
-Once it finishes, reboot your system:
-
-```bash
-reboot
-```
+> If you use NVIDIA or Intel, replace the GPU driver packages in [step 2](#2-gpu-drivers).
 
 ---
 
-## What the script does
+## Installation
 
 ### 1. Base dependencies
 
-Installs `base-devel` and `git`, which are required to compile AUR packages and clone repositories.
+Install `base-devel` and `git`, required to compile packages and clone repositories.
 
 ```bash
-sudo pacman -S --needed --noconfirm base-devel git
+sudo pacman -S --needed base-devel git
 ```
 
-### 2. Official packages
-
-Installs all required packages via `pacman`. See the [package details](#package-details) section for a description of each one.
+Verify:
 
 ```bash
-sudo pacman -S --needed --noconfirm \
-    hyprland amd-ucode mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon \
-    wayland wayland-protocols xdg-user-dirs meson scdoc libxkbcommon \
-    freetype2 harfbuzz cairo pango \
-    greetd greetd-tuigreet \
-    fish vim neovim \
-    waybar swww mako nwg-look \
-    thunar gvfs udiskie \
-    ttf-martian-mono-nerd noto-fonts noto-fonts-emoji noto-fonts-cjk \
-    imv mpv zathura-pdf-mupdf \
-    wl-clipboard cliphist grim slurp \
-    iwd openssh systemd-networkd systemd-resolved curl \
-    pamixer pavucontrol \
-    ripgrep fastfetch stow brightnessctl tar zip unzip
+git --version
 ```
 
-### 3. Paru (AUR Helper)
+---
 
-Checks if `paru` is already installed. If not, it is compiled and installed from the AUR.
+### 2. GPU drivers
+
+Install the Mesa and Vulkan drivers for AMD GPUs:
 
 ```bash
-git clone https://aur.archlinux.org/paru.git /tmp/paru
-cd /tmp/paru
-makepkg -si --noconfirm
+sudo pacman -S --needed amd-ucode mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon
 ```
 
-### 4. AUR packages
-
-Installs additional packages available only on the AUR:
+Verify the Vulkan driver is active:
 
 ```bash
-paru -S --needed --noconfirm asdf-vm bibata-cursor-theme-bin google-chrome tofi
+vulkaninfo --summary
 ```
 
-| Package | Description |
-|---|---|
-| `asdf-vm` | Multi-language version manager (Node, Python, Ruby, etc.) |
-| `bibata-cursor-theme-bin` | Minimal and modern cursor theme |
-| `google-chrome` | Google Chrome browser |
-| `tofi` | Minimal application launcher for Wayland |
+> Replace with `nvidia` or `intel-media-driver` packages if not using AMD.
 
-### 5. Display Manager (greetd)
+---
 
-Removes `sddm` if installed to avoid conflicts, then sets up `greetd` with `tuigreet` as the login manager.
+### 3. Wayland & Hyprland
 
-The generated configuration at `/etc/greetd/config.toml`:
+Install Hyprland and its Wayland dependencies:
+
+```bash
+sudo pacman -S --needed \
+    hyprland \
+    wayland wayland-protocols xdg-user-dirs \
+    libxkbcommon meson scdoc \
+    freetype2 harfbuzz cairo pango
+```
+
+Verify Hyprland is available:
+
+```bash
+Hyprland --version
+```
+
+---
+
+### 4. Display Manager (greetd)
+
+Install greetd and the tuigreet frontend:
+
+```bash
+sudo pacman -S --needed greetd greetd-tuigreet
+```
+
+If `sddm` is installed, remove it to avoid conflicts:
+
+```bash
+sudo pacman -Rns sddm
+```
+
+Create the configuration file:
+
+```bash
+sudo mkdir -p /etc/greetd
+sudo nano /etc/greetd/config.toml
+```
+
+Paste the following content:
 
 ```toml
 [terminal]
@@ -127,15 +131,88 @@ command = "tuigreet --time --cmd Hyprland"
 user = "greeter"
 ```
 
-The service is enabled automatically:
+Enable the service:
 
 ```bash
-sudo systemctl enable --now greetd
+sudo systemctl enable greetd
 ```
 
-### 6. GTK Theme — Graphite
+Verify it is enabled:
 
-Clones and installs the [Graphite GTK Theme](https://github.com/vinceliuice/Graphite-gtk-theme) system-wide under `/usr/share/themes`, with the `black` and `rimless` tweaks.
+```bash
+systemctl is-enabled greetd
+```
+
+---
+
+### 5. Paru (AUR Helper)
+
+Check if `paru` is already installed:
+
+```bash
+paru --version
+```
+
+If not, clone and build it from the AUR:
+
+```bash
+git clone https://aur.archlinux.org/paru.git /tmp/paru
+cd /tmp/paru
+makepkg -si
+```
+
+Verify:
+
+```bash
+paru --version
+```
+
+---
+
+### 6. Terminal & Editors
+
+Install Fish, Vim, and Neovim:
+
+```bash
+sudo pacman -S --needed fish vim neovim
+```
+
+Verify each:
+
+```bash
+fish --version
+vim --version | head -1
+nvim --version | head -1
+```
+
+---
+
+### 7. Interface
+
+Install the status bar, wallpaper daemon, notification daemon, and GTK configurator:
+
+```bash
+sudo pacman -S --needed waybar swww mako nwg-look
+```
+
+Install `tofi` (application launcher) from the AUR:
+
+```bash
+paru -S --needed tofi
+```
+
+Verify:
+
+```bash
+waybar --version
+tofi --version
+```
+
+---
+
+### 8. GTK Theme — Graphite
+
+Clone and install the [Graphite GTK Theme](https://github.com/vinceliuice/Graphite-gtk-theme) with the `black` and `rimless` tweaks:
 
 ```bash
 git clone https://github.com/vinceliuice/Graphite-gtk-theme.git /tmp/graphite
@@ -143,27 +220,216 @@ cd /tmp/graphite
 sudo ./install.sh -d /usr/share/themes --tweaks black rimless
 ```
 
-### 7. Icons — YAMIS
+Verify the theme was installed:
 
-Clones and installs the [YAMIS](https://github.com/googIyEYES/YAMIS) icon pack globally under `/usr/share/icons/YAMIS`.
+```bash
+ls /usr/share/themes | grep Graphite
+```
+
+---
+
+### 9. Icons — YAMIS
+
+Clone the [YAMIS](https://github.com/googIyEYES/YAMIS) repository, extract the icon pack, and install it:
 
 ```bash
 git clone https://github.com/googIyEYES/YAMIS.git /tmp/yamis
-sudo cp -r /tmp/yamis /usr/share/icons/YAMIS
+cd /tmp/yamis
+tar -xzf monochrome-icon-theme.tar.gz
+sudo cp -r YAMIS /usr/share/icons/YAMIS
 ```
 
-### 8. Fish Shell
+Verify:
 
-Adds `fish` to the list of valid shells in `/etc/shells` and sets it as the default shell for the current user.
+```bash
+ls /usr/share/icons | grep YAMIS
+```
+
+---
+
+### 10. Cursor — Notwaita
+
+Install the Notwaita cursor theme from the AUR:
+
+```bash
+paru -S --needed notwaita-cursor-theme
+```
+
+Verify:
+
+```bash
+ls /usr/share/icons | grep -i notwaita
+```
+
+---
+
+### 11. Fonts
+
+Install the required fonts:
+
+```bash
+sudo pacman -S --needed \
+    ttf-martian-mono-nerd \
+    noto-fonts noto-fonts-emoji noto-fonts-cjk
+```
+
+Verify the fonts are recognized by the system:
+
+```bash
+fc-list | grep -i martian
+```
+
+---
+
+### 12. File Manager
+
+Install Thunar and its supporting packages:
+
+```bash
+sudo pacman -S --needed thunar gvfs udiskie
+```
+
+Verify Thunar launches:
+
+```bash
+thunar --version
+```
+
+---
+
+### 13. Audio
+
+Install the audio control tools:
+
+```bash
+sudo pacman -S --needed pamixer pavucontrol
+```
+
+Verify:
+
+```bash
+pamixer --version
+```
+
+---
+
+### 14. Media
+
+Install the image viewer, video player, and PDF reader:
+
+```bash
+sudo pacman -S --needed imv mpv zathura-pdf-mupdf
+```
+
+Verify:
+
+```bash
+mpv --version | head -1
+```
+
+---
+
+### 15. Clipboard & Screenshots
+
+Install clipboard and screenshot utilities:
+
+```bash
+sudo pacman -S --needed wl-clipboard cliphist grim slurp
+```
+
+Verify:
+
+```bash
+grim --help 2>&1 | head -1
+```
+
+---
+
+### 16. Networking
+
+Install the networking stack:
+
+```bash
+sudo pacman -S --needed iwd openssh systemd-networkd systemd-resolved curl
+```
+
+Enable the services:
+
+```bash
+sudo systemctl enable iwd
+sudo systemctl enable systemd-networkd
+sudo systemctl enable systemd-resolved
+sudo systemctl enable sshd
+```
+
+Verify they are enabled:
+
+```bash
+systemctl is-enabled iwd systemd-networkd systemd-resolved sshd
+```
+
+---
+
+### 17. Utilities
+
+Install the remaining utilities:
+
+```bash
+sudo pacman -S --needed ripgrep fastfetch stow brightnessctl tar zip unzip
+```
+
+Install Google Chrome from the AUR:
+
+```bash
+paru -S --needed google-chrome
+```
+
+Verify:
+
+```bash
+rg --version
+fastfetch --version
+stow --version | head -1
+```
+
+---
+
+### 18. Fish Shell
+
+Add `fish` to the list of valid shells and set it as your default:
 
 ```bash
 echo $(which fish) | sudo tee -a /etc/shells
-sudo chsh -s $(which fish) $USER
+chsh -s $(which fish)
 ```
 
-### 9. Dotfiles with GNU Stow
+Verify the change (takes effect on next login):
 
-Clones this dotfiles repository and uses `stow` to create symlinks for all configs into `$HOME`.
+```bash
+grep fish /etc/shells
+```
+
+---
+
+### 19. asdf-vm
+
+Install `asdf-vm` from the AUR:
+
+```bash
+paru -S --needed asdf-vm
+```
+
+Verify:
+
+```bash
+asdf version
+```
+
+---
+
+### 20. Dotfiles with GNU Stow
+
+Clone this repository and use `stow` to symlink all configs into `$HOME`:
 
 ```bash
 git clone https://github.com/hananitallyson/dotfiles.git ~/dotfiles
@@ -173,172 +439,30 @@ stow .
 
 `stow .` mirrors the directory structure from `~/dotfiles` into `~/`. For example, `~/dotfiles/.config/hypr/` becomes a symlink at `~/.config/hypr/`.
 
----
+Verify a symlink was created correctly:
 
-## Package details
-
-### Compositor & Wayland
-
-| Package | Description |
-|---|---|
-| `hyprland` | Dynamic tiling Wayland compositor with animations and eye candy |
-| `wayland` | Modern display server protocol, replacing X11 |
-| `wayland-protocols` | Extra protocol extensions for Wayland |
-| `xdg-user-dirs` | Manages standard user directories (`~/Downloads`, `~/Documents`, etc.) |
-| `libxkbcommon` | Keyboard mapping library for Wayland |
-| `meson` | Build system (required by some Wayland packages) |
-| `scdoc` | Man page generator (build dependency) |
-
-### GPU & Drivers
-
-| Package | Description |
-|---|---|
-| `amd-ucode` | Security microcode updates for AMD CPUs |
-| `mesa` | Open-source OpenGL/Vulkan implementation |
-| `lib32-mesa` | 32-bit Mesa build (for Wine and game compatibility) |
-| `vulkan-radeon` | Vulkan driver for AMD GPUs (RADV) |
-| `lib32-vulkan-radeon` | 32-bit Vulkan driver for AMD GPUs |
-
-> Replace with `nvidia` or `intel-media-driver` if not using AMD.
-
-### Text Rendering
-
-| Package | Description |
-|---|---|
-| `freetype2` | Font rendering engine |
-| `harfbuzz` | Text shaping engine (unicode, ligatures, etc.) |
-| `cairo` | 2D vector graphics library |
-| `pango` | Internationalized text layout and rendering |
-
-### Display Manager
-
-| Package | Description |
-|---|---|
-| `greetd` | Minimal and flexible display manager |
-| `greetd-tuigreet` | Terminal UI greeter frontend for greetd |
-
-### Shell & Editors
-
-| Package | Description |
-|---|---|
-| `fish` | Modern interactive shell with smart autocompletion |
-| `vim` | Classic terminal text editor |
-| `neovim` | Modern Vim fork, extensible via Lua |
-
-### Interface & Widgets
-
-| Package | Description |
-|---|---|
-| `waybar` | Highly customizable status bar for Wayland |
-| `swww` | Animated wallpaper daemon for Wayland |
-| `mako` | Lightweight notification daemon for Wayland |
-| `nwg-look` | GTK theme configurator for Wayland environments |
-
-### File Manager
-
-| Package | Description |
-|---|---|
-| `thunar` | Lightweight and fast GTK file manager |
-| `gvfs` | Virtual filesystem backend for Thunar (network shares, trash, etc.) |
-| `udiskie` | Automounter for USB devices with systray support |
-
-### Fonts
-
-| Package | Description |
-|---|---|
-| `ttf-martian-mono-nerd` | Monospace font with Nerd Font icons (used in the terminal) |
-| `noto-fonts` | Google Noto font family for multilingual support |
-| `noto-fonts-emoji` | Color emoji font (Google Noto) |
-| `noto-fonts-cjk` | Chinese, Japanese, and Korean character support |
-
-### Media
-
-| Package | Description |
-|---|---|
-| `imv` | Minimal image viewer for Wayland |
-| `mpv` | Powerful and scriptable video player |
-| `zathura-pdf-mupdf` | Minimal PDF reader with Vim-like keybindings |
-
-### Clipboard & Screenshots
-
-| Package | Description |
-|---|---|
-| `wl-clipboard` | `wl-copy` / `wl-paste` clipboard utilities for Wayland |
-| `cliphist` | Clipboard history manager for Wayland |
-| `grim` | Screenshot tool for Wayland |
-| `slurp` | Screen region selector (used alongside grim) |
-
-### Networking
-
-| Package | Description |
-|---|---|
-| `iwd` | Modern and lightweight Wi-Fi daemon (replaces wpa_supplicant) |
-| `openssh` | SSH client and server |
-| `systemd-networkd` | systemd-integrated network manager |
-| `systemd-resolved` | systemd-integrated DNS resolver |
-| `curl` | Command-line tool for data transfer |
-
-### Audio
-
-| Package | Description |
-|---|---|
-| `pamixer` | Command-line volume control (PulseAudio/Pipewire) |
-| `pavucontrol` | Graphical audio control interface |
-
-### Utilities
-
-| Package | Description |
-|---|---|
-| `ripgrep` | Ultra-fast `grep` alternative written in Rust |
-| `fastfetch` | System information display tool (neofetch successor) |
-| `stow` | Symlink manager for dotfiles |
-| `brightnessctl` | Screen brightness control via command line |
-| `tar` / `zip` / `unzip` | Compression and archiving tools |
-
----
-
-## Dotfiles structure
-
-```
-~/dotfiles/
-├── .config/
-│   ├── hypr/          # Hyprland configuration
-│   ├── waybar/        # Status bar configuration
-│   ├── fish/          # Fish shell configuration
-│   ├── nvim/          # Neovim configuration
-│   ├── mako/          # Notification daemon configuration
-└── └── tofi/          # Application launcher configuration
+```bash
+ls -la ~/.config/hypr
 ```
 
-The exact structure depends on your dotfiles. `stow .` handles creating the correct symlinks automatically.
+Reboot your system:
+
+```bash
+reboot
+```
 
 ---
 
 ## Post-installation
 
-After rebooting, you may want to:
-
-Enable Wi-Fi with iwd:
+After rebooting, connect to Wi-Fi if needed:
 
 ```bash
-sudo systemctl enable --now iwd
+sudo systemctl start iwd
 iwctl station wlan0 connect "Network Name"
 ```
 
-Enable systemd-networkd and resolved:
-
-```bash
-sudo systemctl enable --now systemd-networkd
-sudo systemctl enable --now systemd-resolved
-```
-
-Enable SSH:
-
-```bash
-sudo systemctl enable --now sshd
-```
-
-Apply the GTK theme with nwg-look:
+Apply the GTK theme, icons, and cursor with nwg-look:
 
 ```bash
 nwg-look
