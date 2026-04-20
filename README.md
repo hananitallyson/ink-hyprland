@@ -331,12 +331,6 @@ Install clipboard and screenshot utilities:
 sudo pacman -S --needed wl-clipboard cliphist grim slurp
 ```
 
-Verify:
-
-```bash
-grim --help 2>&1 | head -1
-```
-
 ---
 
 ### 16. Networking
