@@ -14,7 +14,7 @@ Manual setup guide for my personal Arch Linux environment using Hyprland as the 
   - [4. Display Manager (greetd)](#4-display-manager-greetd)
   - [5. Paru (AUR Helper)](#5-paru-aur-helper)
   - [6. Terminal & Editors](#6-terminal--editors)
-  - [7. Interface & Widgets](#7-interface)
+  - [7. Interface](#7-interface)
   - [8. GTK Theme — Graphite](#8-gtk-theme--graphite)
   - [9. Icons — YAMIS](#9-icons--yamis)
   - [10. Cursor — Notwaita](#10-cursor--notwaita)
@@ -69,13 +69,7 @@ Install the Mesa and Vulkan drivers for AMD GPUs:
 sudo pacman -S --needed amd-ucode mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon
 ```
 
-Verify the Vulkan driver is active:
-
-```bash
-vulkaninfo --summary
-```
-
-> Replace with `nvidia` or `intel-media-driver` packages if not using AMD.
+> Replace with nvidia-open for NVIDIA support, or use only the mesa package for integrated graphics if you are not using AMD.
 
 ---
 
