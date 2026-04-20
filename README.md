@@ -14,7 +14,7 @@ Manual setup guide for my personal Arch Linux environment using Hyprland as the 
   - [4. Display Manager (greetd)](#4-display-manager-greetd)
   - [5. Paru (AUR Helper)](#5-paru-aur-helper)
   - [6. Terminal & Editors](#6-terminal--editors)
-  - [7. Interface & Widgets](#7-interface--widgets)
+  - [7. Interface](#7-interface)
   - [8. GTK Theme — Graphite](#8-gtk-theme--graphite)
   - [9. Icons — YAMIS](#9-icons--yamis)
   - [10. Cursor — Notwaita](#10-cursor--notwaita)
@@ -199,7 +199,7 @@ grep fish /etc/shells
 
 ---
 
-### 7. INTERFACE & WIDGETS
+### 7. INTERFACE
 
 Install the status bar, wallpaper daemon, notification daemon, and GTK configurator:
 
