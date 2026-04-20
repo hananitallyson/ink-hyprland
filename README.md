@@ -1,10 +1,10 @@
-# Ink Hyprland
+# INK HYPRLAND
 
 Manual setup guide for my personal Arch Linux environment using Hyprland as the Wayland compositor, Fish shell, Neovim, and GNU Stow for dotfile management.
 
 ---
 
-## Table of Contents
+## TABLE OF CONTENTS
 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
@@ -31,7 +31,7 @@ Manual setup guide for my personal Arch Linux environment using Hyprland as the 
 
 ---
 
-## Prerequisites
+## PREREQUISITES
 
 - Arch Linux installed and running
 - Internet access
@@ -42,9 +42,9 @@ Manual setup guide for my personal Arch Linux environment using Hyprland as the 
 
 ---
 
-## Installation
+## INSTALLATION
 
-### 1. Base dependencies
+### 1. BASE DEPENDENCIES
 
 Install `base-devel` and `git`, required to compile packages and clone repositories.
 
@@ -60,7 +60,7 @@ git --version
 
 ---
 
-### 2. GPU drivers
+### 2. GPU DRIVERS
 
 Install the Mesa and Vulkan drivers for AMD GPUs:
 
@@ -78,7 +78,7 @@ vulkaninfo --summary
 
 ---
 
-### 3. Wayland & Hyprland
+### 3. WAYLAND & HYPRLAND
 
 Install Hyprland and its Wayland dependencies:
 
@@ -98,7 +98,7 @@ Hyprland --version
 
 ---
 
-### 4. Display Manager (greetd)
+### 4. DISPLAY MANAGER (GREETD)
 
 Install greetd and the tuigreet frontend:
 
@@ -144,7 +144,7 @@ systemctl is-enabled greetd
 
 ---
 
-### 5. Paru (AUR Helper)
+### 5. PARU (AUR HELPER)
 
 Check if `paru` is already installed:
 
@@ -168,7 +168,7 @@ paru --version
 
 ---
 
-### 6. Terminal & Editors
+### 6. TERMINAL & EDITORS
 
 Install Fish, Vim, and Neovim:
 
@@ -199,7 +199,7 @@ grep fish /etc/shells
 
 ---
 
-### 7. Interface & Widgets
+### 7. INTERFACE & WIDGETS
 
 Install the status bar, wallpaper daemon, notification daemon, and GTK configurator:
 
@@ -222,7 +222,7 @@ tofi --version
 
 ---
 
-### 8. GTK Theme — Graphite
+### 8. GTK THEME — GRAPHITE
 
 Clone and install the [Graphite GTK Theme](https://github.com/vinceliuice/Graphite-gtk-theme) with the `black` and `rimless` tweaks:
 
@@ -240,15 +240,16 @@ ls /usr/share/themes | grep Graphite
 
 ---
 
-### 9. Icons — YAMIS
+### 9. ICONS — YAMIS
 
-Clone the [YAMIS](https://github.com/googIyEYES/YAMIS) repository, extract the icon pack, and install it:
+Clone the [YAMIS](https://github.com/googIyEYES/YAMIS) repository, extract the icon pack to a temporary directory, copy it to the system icons directory, then clean up:
 
 ```bash
 git clone https://github.com/googIyEYES/YAMIS.git /tmp/yamis
 cd /tmp/yamis
-tar -xzf monochrome-icon-theme.tar.gz
-sudo cp -r YAMIS /usr/share/icons/YAMIS
+tar -xzvf monochrome-icon-theme.tar.gz -C /tmp/yamis/
+sudo cp -r /tmp/yamis/YAMIS /usr/share/icons/YAMIS
+rm -rf /tmp/yamis
 ```
 
 Verify:
@@ -259,7 +260,7 @@ ls /usr/share/icons | grep YAMIS
 
 ---
 
-### 10. Cursor — Notwaita
+### 10. CURSOR — NOTWAITA
 
 Install the Notwaita cursor theme from the AUR:
 
@@ -275,7 +276,7 @@ ls /usr/share/icons | grep -i notwaita
 
 ---
 
-### 11. Fonts
+### 11. FONTS
 
 Install the required fonts:
 
@@ -293,7 +294,7 @@ fc-list | grep -i martian
 
 ---
 
-### 12. File Manager
+### 12. FILE MANAGER
 
 Install Thunar and its supporting packages:
 
@@ -309,7 +310,7 @@ thunar --version
 
 ---
 
-### 13. Audio
+### 13. AUDIO
 
 Install the audio control tools:
 
@@ -325,7 +326,7 @@ pamixer --version
 
 ---
 
-### 14. Media
+### 14. MEDIA
 
 Install the image viewer, video player, and PDF reader:
 
@@ -341,7 +342,7 @@ mpv --version | head -1
 
 ---
 
-### 15. Clipboard & Screenshots
+### 15. CLIPBOARD & SCREENSHOTS
 
 Install clipboard and screenshot utilities:
 
@@ -357,7 +358,7 @@ grim --help 2>&1 | head -1
 
 ---
 
-### 16. Networking
+### 16. NETWORKING
 
 Install the networking stack:
 
@@ -382,7 +383,7 @@ systemctl is-enabled iwd systemd-networkd systemd-resolved sshd
 
 ---
 
-### 17. Utilities
+### 17. UTILITIES
 
 Install the remaining utilities:
 
@@ -406,7 +407,7 @@ stow --version | head -1
 
 ---
 
-### 18. asdf-vm
+### 18. ASDF-VM
 
 Install `asdf-vm` from the AUR:
 
@@ -422,7 +423,7 @@ asdf version
 
 ---
 
-### 19. Dotfiles with GNU Stow
+### 19. DOTFILES WITH GNU STOW
 
 Clone this repository and use `stow` to symlink all configs into `$HOME`:
 
@@ -448,7 +449,7 @@ reboot
 
 ---
 
-## Post-installation
+## POST-INSTALLATION
 
 After rebooting, connect to Wi-Fi if needed:
 
