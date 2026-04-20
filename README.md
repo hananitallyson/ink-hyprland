@@ -8,25 +8,27 @@ Manual setup guide for my personal Arch Linux environment using Hyprland as the 
 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
-  - [1. Base dependencies](#1-base-dependencies)
-  - [2. GPU drivers](#2-gpu-drivers)
-  - [3. Wayland & Hyprland](#3-wayland--hyprland)
-  - [4. Display Manager (greetd)](#4-display-manager-greetd)
-  - [5. Paru (AUR Helper)](#5-paru-aur-helper)
-  - [6. Terminal & Editors](#6-terminal--editors)
-  - [7. Interface](#7-interface)
-  - [8. GTK Theme — Graphite](#8-gtk-theme--graphite)
-  - [9. Icons — YAMIS](#9-icons--yamis)
-  - [10. Cursor — Notwaita](#10-cursor--notwaita)
-  - [11. Fonts](#11-fonts)
-  - [12. File Manager](#12-file-manager)
-  - [13. Audio](#13-audio)
-  - [14. Media](#14-media)
-  - [15. Clipboard & Screenshots](#15-clipboard--screenshots)
-  - [16. Networking](#16-networking)
-  - [17. Utilities](#17-utilities)
-  - [18. asdf-vm](#18-asdf-vm)
-  - [19. Dotfiles with GNU Stow](#19-dotfiles-with-gnu-stow)
+  - [Base Dependencies](#base-dependencies)
+  - [GPU Drivers](#gpu-drivers)
+  - [Wayland & Hyprland](#wayland--hyprland)
+  - [Display Manager](#display-manager)
+  - [Paru](#paru)
+  - [Terminal & Editors](#terminal--editors)
+  - [Interface](#interface)
+  - [GTK Theme](#gtk-theme)
+  - [Icons](#icons)
+  - [Cursor](#cursor)
+  - [Fonts](#fonts)
+  - [File Manager](#file-manager)
+  - [Audio](#audio)
+  - [Media](#media)
+  - [Clipboard & Screenshots](#clipboard--screenshots)
+  - [Networking](#networking)
+  - [Utilities](#utilities)
+  - [asdf-vm](#asdf-vm)
+  - [Dotfiles](#dotfiles)
+  - [TLP](#tlp)
+  - [auto-cpufreq](#auto-cpufreq)
 - [Post-installation](#post-installation)
 
 ---
@@ -38,13 +40,13 @@ Manual setup guide for my personal Arch Linux environment using Hyprland as the 
 - A regular user with `sudo` access (do **not** run as root)
 - AMD GPU (this guide installs `vulkan-radeon` and `mesa` drivers)
 
-> If you use NVIDIA or Intel, replace the GPU driver packages in [step 2](#2-gpu-drivers).
+> If you use NVIDIA or Intel, replace the GPU driver packages in the [GPU Drivers](#gpu-drivers) section.
 
 ---
 
 ## INSTALLATION
 
-### 1. BASE DEPENDENCIES
+### BASE DEPENDENCIES
 
 Install `base-devel` and `git`, required to compile packages and clone repositories.
 
@@ -60,7 +62,7 @@ git --version
 
 ---
 
-### 2. GPU DRIVERS
+### GPU DRIVERS
 
 Install the Mesa and Vulkan drivers for AMD GPUs:
 
@@ -78,7 +80,7 @@ vulkaninfo --summary
 
 ---
 
-### 3. WAYLAND & HYPRLAND
+### WAYLAND & HYPRLAND
 
 Install Hyprland and its Wayland dependencies:
 
@@ -98,7 +100,7 @@ Hyprland --version
 
 ---
 
-### 4. DISPLAY MANAGER (GREETD)
+### DISPLAY MANAGER
 
 Install greetd and the tuigreet frontend:
 
@@ -144,7 +146,7 @@ systemctl is-enabled greetd
 
 ---
 
-### 5. PARU (AUR HELPER)
+### PARU
 
 Check if `paru` is already installed:
 
@@ -168,7 +170,7 @@ paru --version
 
 ---
 
-### 6. TERMINAL & EDITORS
+### TERMINAL & EDITORS
 
 Install Fish, Vim, and Neovim:
 
@@ -199,7 +201,7 @@ grep fish /etc/shells
 
 ---
 
-### 7. INTERFACE
+### INTERFACE
 
 Install the status bar, wallpaper daemon, notification daemon, and GTK configurator:
 
@@ -222,7 +224,7 @@ tofi --version
 
 ---
 
-### 8. GTK THEME — GRAPHITE
+### GTK THEME
 
 Clone and install the [Graphite GTK Theme](https://github.com/vinceliuice/Graphite-gtk-theme) with the `black` and `rimless` tweaks:
 
@@ -230,7 +232,6 @@ Clone and install the [Graphite GTK Theme](https://github.com/vinceliuice/Graphi
 git clone https://github.com/vinceliuice/Graphite-gtk-theme.git /tmp/graphite
 cd /tmp/graphite
 sudo ./install.sh -d /usr/share/themes --tweaks black rimless
-sudo rm -rf /tmp/graphite
 ```
 
 Verify the theme was installed:
@@ -241,7 +242,7 @@ ls /usr/share/themes | grep Graphite
 
 ---
 
-### 9. ICONS — YAMIS
+### ICONS
 
 Clone the [YAMIS](https://github.com/googIyEYES/YAMIS) repository, extract the icon pack to a temporary directory, copy it to the system icons directory, then clean up:
 
@@ -250,7 +251,7 @@ git clone https://github.com/googIyEYES/YAMIS.git /tmp/yamis
 cd /tmp/yamis
 tar -xzvf monochrome-icon-theme.tar.gz -C /tmp/yamis/
 sudo cp -r /tmp/yamis/YAMIS /usr/share/icons/YAMIS
-sudo rm -rf /tmp/yamis
+rm -rf /tmp/yamis
 ```
 
 Verify:
@@ -261,7 +262,7 @@ ls /usr/share/icons | grep YAMIS
 
 ---
 
-### 10. CURSOR — NOTWAITA
+### CURSOR
 
 Install the Notwaita cursor theme from the AUR:
 
@@ -277,7 +278,7 @@ ls /usr/share/icons | grep -i notwaita
 
 ---
 
-### 11. FONTS
+### FONTS
 
 Install the required fonts:
 
@@ -295,7 +296,7 @@ fc-list | grep -i martian
 
 ---
 
-### 12. FILE MANAGER
+### FILE MANAGER
 
 Install Thunar and its supporting packages:
 
@@ -311,7 +312,7 @@ thunar --version
 
 ---
 
-### 13. AUDIO
+### AUDIO
 
 Install the audio control tools:
 
@@ -327,7 +328,7 @@ pamixer --version
 
 ---
 
-### 14. MEDIA
+### MEDIA
 
 Install the image viewer, video player, and PDF reader:
 
@@ -343,7 +344,7 @@ mpv --version | head -1
 
 ---
 
-### 15. CLIPBOARD & SCREENSHOTS
+### CLIPBOARD & SCREENSHOTS
 
 Install clipboard and screenshot utilities:
 
@@ -359,7 +360,7 @@ grim --help 2>&1 | head -1
 
 ---
 
-### 16. NETWORKING
+### NETWORKING
 
 Install the networking stack:
 
@@ -384,7 +385,7 @@ systemctl is-enabled iwd systemd-networkd systemd-resolved sshd
 
 ---
 
-### 17. UTILITIES
+### UTILITIES
 
 Install the remaining utilities:
 
@@ -408,7 +409,7 @@ stow --version | head -1
 
 ---
 
-### 18. ASDF-VM
+### ASDF-VM
 
 Install `asdf-vm` from the AUR:
 
@@ -424,7 +425,7 @@ asdf version
 
 ---
 
-### 19. DOTFILES WITH GNU STOW
+### DOTFILES
 
 Clone this repository and use `stow` to symlink all configs into `$HOME`:
 
@@ -446,6 +447,66 @@ Reboot your system:
 
 ```bash
 reboot
+```
+
+---
+
+### TLP
+
+> Laptop only. Skip if running on a desktop.
+
+[TLP](https://linrunner.de/tlp/) is a power management tool that optimizes battery life automatically.
+
+Install TLP and the radio device wizard:
+
+```bash
+sudo pacman -S --needed tlp tlp-rdw
+```
+
+Enable the services and mask conflicting ones:
+
+```bash
+sudo systemctl enable tlp.service
+sudo systemctl enable NetworkManager-dispatcher.service
+sudo systemctl mask systemd-rfkill.service systemd-rfkill.socket
+```
+
+Start TLP immediately without rebooting:
+
+```bash
+sudo tlp start
+```
+
+Verify TLP is running:
+
+```bash
+sudo tlp-stat -s
+```
+
+---
+
+### AUTO-CPUFREQ
+
+> Laptop only. Skip if running on a desktop.
+
+[auto-cpufreq](https://github.com/AdnanHodzic/auto-cpufreq) automatically adjusts CPU speed and governor based on power source and system load.
+
+Install from the AUR:
+
+```bash
+paru -S --needed auto-cpufreq
+```
+
+Enable and start the service:
+
+```bash
+sudo systemctl enable --now auto-cpufreq
+```
+
+Verify it is running:
+
+```bash
+auto-cpufreq --stats
 ```
 
 ---
