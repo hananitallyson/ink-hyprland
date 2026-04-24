@@ -28,6 +28,7 @@ Manual setup guide for my personal Arch Linux environment using Hyprland as the 
   - [asdf-vm](#asdf-vm)
   - [Tree-sitter](#tree-sitter)
   - [Dotfiles](#dotfiles)
+  - [XDG DIRS](#xdg-dirs)
   - [TLP](#tlp)
   - [auto-cpufreq](#auto-cpufreq)
 - [Post-installation](#post-installation)
@@ -457,16 +458,17 @@ rm -rf ~/.config/fastfetch \
 Create symlinks manually:
 
 ```bash
-ln -s ~/dotfiles/fastfetch  ~/.config/fastfetch
-ln -s ~/dotfiles/fish       ~/.config/fish
-ln -s ~/dotfiles/hypr       ~/.config/hypr
-ln -s ~/dotfiles/imv        ~/.config/imv
-ln -s ~/dotfiles/kitty      ~/.config/kitty
-ln -s ~/dotfiles/mako       ~/.config/mako
-ln -s ~/dotfiles/mpv        ~/.config/mpv
-ln -s ~/dotfiles/nvim       ~/.config/nvim
-ln -s ~/dotfiles/tofi       ~/.config/tofi
-ln -s ~/dotfiles/waybar     ~/.config/waybar
+ln -s ~/dotfiles/fastfetch          ~/.config/fastfetch
+ln -s ~/dotfiles/fish               ~/.config/fish
+ln -s ~/dotfiles/hypr               ~/.config/hypr
+ln -s ~/dotfiles/imv                ~/.config/imv
+ln -s ~/dotfiles/kitty              ~/.config/kitty
+ln -s ~/dotfiles/mako               ~/.config/mako
+ln -s ~/dotfiles/mpv                ~/.config/mpv
+ln -s ~/dotfiles/nvim               ~/.config/nvim
+ln -s ~/dotfiles/tofi               ~/.config/tofi
+ln -s ~/dotfiles/waybar             ~/.config/waybar
+ln -s ~/dotfiles/user-dirs.dirs     ~/.config/user-dirs.dirs
 ```
 
 Each `ln -s` points `~/.config/<app>` directly to `~/dotfiles/<app>`.
@@ -476,11 +478,14 @@ Verify a symlink:
 ```bash
 ls -la ~/.config/hypr
 ```
+---
 
-Reboot your system:
+### XDG DIRS
+
+To generate the default home folders, use the following command:
 
 ```bash
-reboot
+xdg-user-dirs-update
 ```
 
 ---
