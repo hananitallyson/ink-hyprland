@@ -391,7 +391,7 @@ systemctl is-enabled iwd systemd-networkd systemd-resolved sshd
 Install the remaining utilities:
 
 ```bash
-sudo pacman -S --needed ripgrep fastfetch stow brightnessctl tar zip unzip
+sudo pacman -S --needed ripgrep fastfetch brightnessctl tar zip unzip
 ```
 
 Install Google Chrome from the AUR:
@@ -405,7 +405,6 @@ Verify:
 ```bash
 rg --version
 fastfetch --version
-stow --version | head -1
 ```
 
 ---
@@ -436,13 +435,12 @@ sudo pacman -S tree-sitter-cli
 
 ---
 
-### DOTFILES
+### Dotfiles
 
-Clone this repository and use `stow` to symlink all configs into `$HOME`:
+Clone the repository and remove existing configs (if any):
 
 ```bash
 git clone https://github.com/hananitallyson/dotfiles.git ~/dotfiles
-cd ~/dotfiles
 
 rm -rf ~/.config/fastfetch \
        ~/.config/fish \
@@ -454,13 +452,26 @@ rm -rf ~/.config/fastfetch \
        ~/.config/nvim \
        ~/.config/tofi \
        ~/.config/waybar
-
-stow .
 ```
 
-`stow .` mirrors the directory structure from `~/dotfiles` into `~/`. For example, `~/dotfiles/.config/hypr/` becomes a symlink at `~/.config/hypr/`.
+Create symlinks manually:
 
-Verify a symlink was created correctly:
+```bash
+ln -s ~/dotfiles/fastfetch  ~/.config/fastfetch
+ln -s ~/dotfiles/fish       ~/.config/fish
+ln -s ~/dotfiles/hypr       ~/.config/hypr
+ln -s ~/dotfiles/imv        ~/.config/imv
+ln -s ~/dotfiles/kitty      ~/.config/kitty
+ln -s ~/dotfiles/mako       ~/.config/mako
+ln -s ~/dotfiles/mpv        ~/.config/mpv
+ln -s ~/dotfiles/nvim       ~/.config/nvim
+ln -s ~/dotfiles/tofi       ~/.config/tofi
+ln -s ~/dotfiles/waybar     ~/.config/waybar
+```
+
+Each `ln -s` points `~/.config/<app>` directly to `~/dotfiles/<app>`.
+
+Verify a symlink:
 
 ```bash
 ls -la ~/.config/hypr
