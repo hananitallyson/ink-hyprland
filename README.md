@@ -26,6 +26,7 @@ Manual setup guide for my personal Arch Linux environment using Hyprland as the 
   - [Networking](#networking)
   - [Utilities](#utilities)
   - [asdf-vm](#asdf-vm)
+  - [Tree-sitter](#tree-sitter)
   - [Dotfiles](#dotfiles)
   - [TLP](#tlp)
   - [auto-cpufreq](#auto-cpufreq)
