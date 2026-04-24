@@ -425,6 +425,16 @@ asdf version
 
 ---
 
+### TREE-SITTER
+
+Install the `tree-sitter` CLI, which is required to compile and update parsers used by Neovim plugins:
+
+```bash
+sudo pacman -S tree-sitter-cli
+```
+
+---
+
 ### DOTFILES
 
 Clone this repository and use `stow` to symlink all configs into `$HOME`:
@@ -432,6 +442,18 @@ Clone this repository and use `stow` to symlink all configs into `$HOME`:
 ```bash
 git clone https://github.com/hananitallyson/dotfiles.git ~/dotfiles
 cd ~/dotfiles
+
+rm -rf ~/.config/fastfetch \
+       ~/.config/fish \
+       ~/.config/hypr \
+       ~/.config/imv \
+       ~/.config/kitty \
+       ~/.config/mako \
+       ~/.config/mpv \
+       ~/.config/nvim \
+       ~/.config/tofi \
+       ~/.config/waybar
+
 stow .
 ```
 
