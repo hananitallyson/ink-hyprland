@@ -28,7 +28,7 @@ Manual setup guide for my personal Arch Linux environment using Hyprland as the 
   - [asdf-vm](#asdf-vm)
   - [Tree-sitter](#tree-sitter)
   - [Dotfiles](#dotfiles)
-  - [XDG DIRS](#xdg-dirs)
+  - [XDG Dirs](#xdg-dirs)
   - [TLP](#tlp)
   - [auto-cpufreq](#auto-cpufreq)
 - [Post-installation](#post-installation)
