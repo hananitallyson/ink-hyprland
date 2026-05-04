@@ -130,7 +130,7 @@ Paste the following content:
 vt = 1
 
 [default_session]
-command = "tuigreet --time --cmd Hyprland"
+command = "tuigreet --time --cmd start-hyprland"
 user = "greeter"
 ```
 
